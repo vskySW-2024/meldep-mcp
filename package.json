@@ -1,6 +1,6 @@
 {
   "name": "@mrprasadrsawant/meldep-mcp",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Meldep MCP Server",
   "type": "module",
   "main": "dist/server/index.js",
