@@ -57,7 +57,7 @@ async function executeGetTaskByTaskNumberTool(input) {
             data: [],
         };
     }
-    const employeeId = sessionStore.get('employeeId');
+    const employeeId = sessionStore.getEmployeeId();
     try {
         const rawTaskData = await meldepClient.getTaskByTaskNumber({
             page,

@@ -15,6 +15,9 @@ class SessionStore {
     getUserId() {
         return this.get('userId');
     }
+    getEmployeeId() {
+        return this.get('employeeId');
+    }
     getAccessToken() {
         return this.get('accessToken');
     }
