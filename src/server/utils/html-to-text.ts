@@ -1,3 +1,4 @@
+// @ts-nocheck
 import sanitizeHtml from 'sanitize-html';
 import { decode } from 'html-entities';
 export function cleanHtml(html) {

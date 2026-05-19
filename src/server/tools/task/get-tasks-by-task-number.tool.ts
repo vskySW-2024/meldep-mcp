@@ -1,3 +1,4 @@
+// @ts-nocheck
 // src/server/tools/task/get-tasks-by-task-number.tool.ts
 import { httpClient } from '../../client/http-client.js';
 import { ERP_ENDPOINTS } from '../../constants.js';

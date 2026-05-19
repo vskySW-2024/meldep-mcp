@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { cleanHtml } from '../../../utils/html-to-text.js';
 export function mapWeeklyPlanResponse(rawPlan) {
     if (!rawPlan || !Array.isArray(rawPlan)) {

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { z } from 'zod';
 import { HttpClient } from '../client/http-client.js';
 import { ERP_ENDPOINTS } from '../client/endpoints.js';

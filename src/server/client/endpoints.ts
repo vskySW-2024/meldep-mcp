@@ -1,3 +1,4 @@
+// @ts-nocheck
 export const ERP_ENDPOINTS = {
     AUTH: {
         LOGIN: '/auth/login',

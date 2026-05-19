@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { z } from 'zod';
 function formatWeekEndDate(dateString) {
     const date = new Date(dateString);

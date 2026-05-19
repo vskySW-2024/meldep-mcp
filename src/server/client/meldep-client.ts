@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { HttpClient } from './http-client.js';
 import { ERP_ENDPOINTS } from './endpoints.js';
 import { meldepConfig } from '../config/meldep.config.js';

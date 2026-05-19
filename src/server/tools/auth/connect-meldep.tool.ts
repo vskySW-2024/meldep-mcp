@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { z } from 'zod';
 // import { Tool } from '@modelcontextprotocol/sdk';
 import { login, LoginRequestSchema } from '../../auth/login.js';

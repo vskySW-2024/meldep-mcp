@@ -15,12 +15,21 @@ import { sessionStore } from './auth/session-store.js';
  *
  * Therefore we redirect all logs to stderr.
  */
+interface ToolHandler {
+    (input: any): Promise<any>;
+}
+
+interface ToolHandlers {
+    [key: string]: ToolHandler;
+}
+
 const logger = {
-    info: (...args) => console.error(...args),
-    error: (...args) => console.error(...args),
+    info: (...args: any[]) => console.error(...args),
+    error: (...args: any[]) => console.error(...args),
 };
+
 const tools = [getMonthlyPlanTool, getWeeklyPlanTool, getAllRequirementsByProjectTool, getTaskByTaskNumberTool];
-const toolHandlers = {
+const toolHandlers: ToolHandlers = {
     get_monthly_plan: executeGetMonthlyPlanToolHandler,
     get_weekly_plan: executeGetWeeklyPlanToolHandler,
     get_all_requirements_by_project: executeGetAllRequirementsByProjectToolHandler,

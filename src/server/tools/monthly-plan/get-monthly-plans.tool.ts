@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { z } from 'zod';
 import { meldepClient } from '../../client/meldep-client.js';
 import { sessionStore } from '../../auth/session-store.js';

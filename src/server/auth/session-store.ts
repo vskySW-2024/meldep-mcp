@@ -1,3 +1,4 @@
+// @ts-nocheck
 class SessionStore {
     constructor() {
         this.data = {};

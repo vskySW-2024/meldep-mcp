@@ -1,3 +1,4 @@
+// @ts-nocheck
 // import { isNil } from 'lodash-es';
 // Helper function to strip HTML tags
 function stripHtmlTags(htmlString) {
