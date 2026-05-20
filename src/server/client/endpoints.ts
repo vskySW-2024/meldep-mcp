@@ -12,5 +12,11 @@ export const ERP_ENDPOINTS = {
     TASK: {
         GET_BY_TASK_NUMBER: '/project-tasks/list',
     },
+    TASK: {
+        GET_BY_TASK_NUMBER: '/project-tasks/list',
+    },
+    TIMESHEET: {
+        LIST: '/Timesheet/list',
+    },
     // Add other ERP endpoints as needed
 };

@@ -120,5 +120,36 @@ export class MeldepClient {
             throw error;
         }
     }
+
+    async getTimesheetDataByDateRange(payload) {
+        await this.ensureAuthenticated();
+        const finalPayload = {
+            page: 1,
+            pageSize: 50,
+            sortBy: '',
+            descending: true,
+            searchText: '',
+            createdBy: 'View All',
+            employeeId: payload.employeeId ?? '',
+            projectId: payload.projectId ?? '',
+            projectModuleId: null,
+            projectTaskId: null,
+            activityDate: null,
+            fromDate: payload.fromDate,
+            toDate: payload.toDate,
+            weekFilter: '',
+        };
+        try {
+            const response = await this.httpClient.post(
+                ERP_ENDPOINTS.TIMESHEET.LIST,
+                finalPayload
+            );
+            logger.info('Successfully fetched timesheet data by date range.');
+            return response.data;
+        } catch (error) {
+            logger.error({ error }, 'Failed to fetch timesheet data by date range.');
+            throw error;
+        }
+    }
 }
 export const meldepClient = new MeldepClient();

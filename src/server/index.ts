@@ -7,6 +7,10 @@ import { getWeeklyPlanTool, executeGetWeeklyPlanToolHandler, } from './tools/wee
 import { getAllRequirementsByProjectTool, executeGetAllRequirementsByProjectToolHandler, } from './tools/requirement/get-all-requirements-by-project.tool.js';
 import { executeGetTaskByTaskNumberToolHandler, getTaskByTaskNumberTool } from './tools/task/get-task-by-task-number.tool.js';
 import { login } from './auth/login.js';
+import {
+    getTimesheetDataByDateRangeTool,
+    executeGetTimesheetDataByDateRangeToolHandler,
+} from './tools/timesheet/get-timesheet-data-by-daterange.tool.js';
 import { sessionStore } from './auth/session-store.js';
 /**
  * IMPORTANT:
@@ -28,12 +32,13 @@ const logger = {
     error: (...args: any[]) => console.error(...args),
 };
 
-const tools = [getMonthlyPlanTool, getWeeklyPlanTool, getAllRequirementsByProjectTool, getTaskByTaskNumberTool];
+const tools = [getMonthlyPlanTool, getWeeklyPlanTool, getAllRequirementsByProjectTool, getTaskByTaskNumberTool, getTimesheetDataByDateRangeTool];
 const toolHandlers: ToolHandlers = {
     get_monthly_plan: executeGetMonthlyPlanToolHandler,
     get_weekly_plan: executeGetWeeklyPlanToolHandler,
     get_all_requirements_by_project: executeGetAllRequirementsByProjectToolHandler,
     get_task_by_task_number: executeGetTaskByTaskNumberToolHandler,
+    [getTimesheetDataByDateRangeTool.name]: executeGetTimesheetDataByDateRangeToolHandler,
 };
 const parseCommandLineArgs = () => {
     const args = process.argv.slice(2);
