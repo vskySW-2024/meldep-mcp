@@ -24,5 +24,17 @@ class SessionStore {
     clear() {
         this.data = {};
     }
+    getSiteId() { 
+        return this.get('siteId'); 
+    }
+    getSiteName() { 
+        return this.get('siteName'); 
+    }
+    getSiteLandingPage() { 
+        return this.get('siteLandingPage'); 
+    }
+    getSiteTimezone() { 
+        return this.get('siteTimezone'); 
+    }
 }
 export const sessionStore = new SessionStore();
