@@ -32,9 +32,14 @@ const GetTaskByTaskNumberInputSchema = z.object({
         .optional()
         .default(false)
         .describe('Whether to fetch tasks only for logged-in user'),
+    searchText: z
+        .string()
+        .optional()
+        .default('')
+        .describe('Search keyword to filter tasks by activity name or description. E.g. "re" will match "research", "review", etc.'),
 });
 async function executeGetTaskByTaskNumberTool(input) {
-    const { taskNumber, page, pageSize, searchForLoggedInUserTasks } = input;
+    const { taskNumber, page, pageSize, searchForLoggedInUserTasks, searchText } = input;
     const projectId = sessionStore.getProjectId();
     if (!projectId) {
         return {
@@ -59,38 +64,50 @@ async function executeGetTaskByTaskNumberTool(input) {
     }
     const employeeId = sessionStore.getEmployeeId();
     try {
-        const rawTaskData = await meldepClient.getTaskByTaskNumber({
-            page,
-            pageSize,
-            sortBy: 'createdOnUtc',
-            descending: true,
-            sorts: {},
-            searchText: '',
-            projectTaskNumber: taskNumber || '0',
-            customerIds: [],
-            companyContactIds: [],
-            projectIds: [projectId],
-            projectModuleIds: [],
-            projectTaskIds: [],
-            projectLeadsIds: [],
-            activityOwners: searchForLoggedInUserTasks ? employeeId
-                ? [employeeId]
-                : []
-                : [],
-            statusIds: [],
-            priorityIds: [],
-            taskTagsIds: [],
-            isTemplate: false,
-        });
-        const aiFriendlyTask = mapTaskListResponse(rawTaskData);
-        return {
-            isError: false,
-            message: aiFriendlyTask.length > 0
-                ? 'Successfully retrieved task details.'
-                : 'No tasks found.',
-            data: aiFriendlyTask,
-        };
-    }
+    const rawTaskData = await meldepClient.getTaskByTaskNumber({
+        page,
+        pageSize,
+        sortBy: 'createdOnUtc',
+        descending: true,
+        sorts: {},
+        searchText: '',
+        projectTaskNumber: taskNumber || '0',
+        customerIds: [],
+        companyContactIds: [],
+        projectIds: [projectId],
+        projectModuleIds: [],
+        projectTaskIds: [],
+        projectLeadsIds: [],
+        activityOwners: searchForLoggedInUserTasks ? employeeId ? [employeeId] : [] : [],
+        statusIds: [],
+        priorityIds: [],
+        taskTagsIds: [],
+        isTemplate: false,
+    });
+
+    const aiFriendlyTask = mapTaskListResponse(rawTaskData); // ✅ only once
+
+    const filteredTask = searchText
+    ? aiFriendlyTask
+        .map(task => {
+            const matched = task.activities?.filter(activity => {
+                const match = activity.activityName?.toLowerCase().includes(searchText.toLowerCase());
+                console.error(`Checking: "${activity.activityName}" includes "${searchText}" → ${match}`);
+                return match;
+            }) ?? [];
+            return { ...task, activities: matched };
+        })
+        .filter(task => task.activities.length > 0)
+    : aiFriendlyTask;
+
+    return {
+        isError: false,
+        message: filteredTask.length > 0
+            ? 'Successfully retrieved task details.'
+            : 'No tasks found matching the search criteria.',
+        data: filteredTask,
+    };
+}
     catch (error) {
         logger.error({ error }, 'Error fetching task details.');
         return {
@@ -122,6 +139,10 @@ export const getTaskByTaskNumberTool = {
             searchForLoggedInUserTasks: {
                 type: 'boolean',
                 description: 'Whether to search tasks only assigned to logged-in user',
+            },
+            searchText: {
+                type: 'string',
+                description: 'Search keyword to filter tasks by activity name or description.',
             },
         },
         required: [],
