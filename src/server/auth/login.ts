@@ -26,14 +26,17 @@ const LoginResponseObjectSchema = z.object({
     personId: z.string(),
     firstName: z.string(),
     lastName: z.string(),
-    email: z.string(),
+    userEmail: z.string(),
     employeeId: z.string(),
     roles: z.array(z.string()),
-    rolesName: z.array(z.string()),
+    rolesName: z.array(z.string()).optional(),
     siteId: z.string(),
     userId: z.string(),
     siteName: z.string(),
-    globalSiteId: z.string(),
+    globalSiteId: z.string().optional(),
+    siteTimeZone: z.string().optional(),
+    siteLandingPageLink: z.string().optional(),
+    isMsLogin: z.boolean().optional(),
 });
 // Accept either a single object or an array of objects and normalize to array below
 export const LoginResponseSchema = z.union([LoginResponseObjectSchema, z.array(LoginResponseObjectSchema)]);
@@ -50,14 +53,16 @@ export async function login(credentials) {
             sessionStore.set('personId', authData.personId);
             sessionStore.set('firstName', authData.firstName);
             sessionStore.set('lastName', authData.lastName);
-            sessionStore.set('email', authData.email);
+            sessionStore.set('email', authData.userEmail);          
             sessionStore.set('employeeId', authData.employeeId);
             sessionStore.set('roles', authData.roles);
-            sessionStore.set('rolesName', authData.rolesName);
+            sessionStore.set('rolesName', authData.rolesName ?? []);
             sessionStore.set('siteId', authData.siteId);
             sessionStore.set('userId', authData.userId);
             sessionStore.set('siteName', authData.siteName);
-            sessionStore.set('globalSiteId', authData.globalSiteId);
+            sessionStore.set('globalSiteId', authData.globalSiteId ?? '');
+            sessionStore.set('siteLandingPage', authData.siteLandingPageLink ?? '/dashboard');
+            sessionStore.set('siteTimezone', authData.siteTimeZone ?? 'India Standard Time'); 
             logger.info('User logged in successfully: %s', authData.username);
             return true;
         }

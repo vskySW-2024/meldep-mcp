@@ -1,5 +1,6 @@
 // @ts-nocheck
 import axios from 'axios';
+import { sessionStore } from '../auth/session-store.js';
 const logger = {
     info: (...args) => console.error(...args),
     warn: (...args) => console.error(...args),
@@ -50,8 +51,16 @@ export class HttpClient {
     async delete(url, config) {
         return this.client.delete(url, config);
     }
+    // setAuthToken(token) {
+    //     this.client.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    // }
     setAuthToken(token) {
+        // const { sessionStore } = require('../auth/session-store.js'); // already imported in meldep-client, but needed here
         this.client.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        this.client.defaults.headers.common['x-site-id'] = sessionStore.getSiteId() ?? '';
+        this.client.defaults.headers.common['x-site-name'] = sessionStore.getSiteName() ?? '';
+        // this.client.defaults.headers.common['x-site-landingpage'] = sessionStore.getSiteLandingPage() ?? '/dashboard';
+        this.client.defaults.headers.common['X-Site-Timezone'] = sessionStore.getSiteTimezone() ?? 'India Standard Time';
     }
     removeAuthToken() {
         delete this.client.defaults.headers.common['Authorization'];
